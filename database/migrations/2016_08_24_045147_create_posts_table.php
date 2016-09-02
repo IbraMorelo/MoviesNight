@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreatePostsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->date('released');
+            $table->text('synopsis');
+            $table->integer('number');
+            $table->string('language');
+            $table->integer('runtime');
+            $table->string('type');
+            $table->string('country');
+            $table->string('slug')->nullable();
+            $table->integer('post_parent');
+            $table->integer('rating_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->timestamps();
+        });
+
+        Schema::table('posts', function ($table){
+            $table->foreign('rating_id')->references('id')->on('ratings');
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('posts');
+    }
+}
